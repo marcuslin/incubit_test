@@ -18,6 +18,17 @@ class PasswordsController < ApplicationController
   end
 
   def update
+    @form = ResetPasswordForm.new(User.find_by(reset_password_token: params[:reset_password_token]))
+
+    if @form.validate(user_params)
+      @form.save
+
+      redirect_to root_path, notice: 'Password changed'
+    else
+      flash[:error] = @form.errors.full_messages
+
+      redirect_back(fallback_location: root_path)
+    end
   end
 
   private
