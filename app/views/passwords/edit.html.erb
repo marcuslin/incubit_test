@@ -1,0 +1,6 @@
+<%= simple_form_for :user, as: :user, url: password_path, method: 'put' do |f| %>
+  <%= f.input :password %>
+  <%= f.input :password_confirmation %>
+
+  <%= f.submit 'reset password', class: 'btn btn-outline-primary mt-1' %>
+<% end %>

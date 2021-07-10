@@ -1,0 +1,6 @@
+<p class="text-start fs-1">Forgot Password</p>
+<%= simple_form_for :user, url: passwords_path do |f| %>
+  <%= f.input :email %>
+
+  <%= f.submit 'Send', class: 'btn btn-outline-primary mt-1' %>
+<% end %>
