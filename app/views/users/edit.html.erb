@@ -1,0 +1,9 @@
+<p class="text-start fs-1">Edit</p>
+<%= simple_form_for @form, as: :user, url: user_path, method: 'put' do |f| %>
+  <%= f.input :email, input_html: { readonly: true } %>
+  <%= f.input :username %>
+  <%= f.input :password %>
+  <%= f.input :password_confirmation %>
+
+  <%= f.submit 'Update', class: 'btn btn-outline-primary mt-1' %>
+<% end %>
