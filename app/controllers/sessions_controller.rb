@@ -14,7 +14,7 @@ class SessionsController < ApplicationController
     else
       flash[:error] = user_authentication.error_message
 
-      Sessions::LockUserService.call(@user) if @user
+      Sessions::LockUser.call(@user) if @user
 
       render(:new)
     end
