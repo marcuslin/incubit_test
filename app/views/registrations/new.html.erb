@@ -1,0 +1,7 @@
+<p class="text-start fs-1">Sign Up</p>
+<%= simple_form_for @form, as: :user, url: sign_up_path, input_html: { class: 'form-inline' } do |f| %>
+  <%= f.input :email %>
+  <%= f.input :password %>
+  <%= f.input :password_confirmation %>
+  <%= f.submit 'Sign Up', class: 'btn btn-outline-primary mt-1' %>
+<% end %>
