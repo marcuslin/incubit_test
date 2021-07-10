@@ -11,4 +11,5 @@ Rails.application.routes.draw do
   delete 'sign_out', to: 'sessions#destroy'
 
   resources :users, only: %i[edit update]
+  resources :passwords, except: :delete, param: :reset_password_token
 end
