@@ -1,24 +1,44 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+* Ruby version: `3.0.1`
+* Rails version: `6.1.4`
+* Database: Postgresql
 
-Things you may want to cover:
+## Clone project
+* Execute `git clone git@github.com:marcuslin/incubit_assessment.git` in your console,
+and the directory you want to place this project
 
-* Ruby version
+## Setting up environment
+* Install gems by executing `bundle` in console under project directory
 
-* System dependencies
+* Rename both databse.example.yml and secrets.example.yml
+Rename both these files by executing the command below:
+```
+mv config/database.example.yml config/database.yml
+mv config/secrets.example.yml config/secrets.yml
+```
 
-* Configuration
+## Create database
+* Execute the command below to create both development and test db
+```
+rails db:create
+```
 
-* Database creation
+* Execute the command below for db migration
+```
+rails db:migrate
+```
 
-* Database initialization
+## Test
+* Execute the commad below to run all tests in console
+```
+rspec spec/
+```
 
-* How to run the test suite
+* For running specific test execute the command below in console
+```
+rspec spec/{ test_type }/{ filename }_spec.rb
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+* Note: For this project, `test_type` will only be `models` and `requests`
 
-* Deployment instructions
-
-* ...
