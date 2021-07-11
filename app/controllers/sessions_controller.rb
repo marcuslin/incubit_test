@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
     @user = User.find_by(email: params[:user][:email])
     user_authentication = Sessions::AuthenticateUser.call(@user, params[:user])
 
-    if user_authentication.authorized?
+    if user_authentication.authenticated?
       sign_in(@user)
     else
       flash[:error] = user_authentication.error_message

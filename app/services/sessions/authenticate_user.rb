@@ -13,7 +13,7 @@ module Sessions
       itself
     end
 
-    def authorized?
+    def authenticated?
       user&.authenticate(password) && !user&.locked?
     end
 

@@ -7,7 +7,7 @@ module Passwords
     let(:delivered) { ActionMailer::Base.deliveries }
 
     context 'existing user' do
-      let(:subject) { GenerateResetToken.call(user) }
+      let(:subject) { described_class.call(user) }
 
       it 'add reset_password_token to user' do
         subject

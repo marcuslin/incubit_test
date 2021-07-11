@@ -21,10 +21,10 @@ module Sessions
       end
     end
 
-    describe '#authorized?' do
+    describe '#authenticated?' do
       context 'with correct sign in information' do
         it 'return true' do
-          expect(subject.authorized?).to be_truthy
+          expect(subject.authenticated?).to be_truthy
         end
       end
 
@@ -37,7 +37,7 @@ module Sessions
         end
 
         it 'return false' do
-          expect(subject.authorized?).to be_falsey
+          expect(subject.authenticated?).to be_falsey
         end
       end
 
@@ -50,7 +50,7 @@ module Sessions
         end
 
         it 'return false' do
-          expect(subject.authorized?).to be_falsey
+          expect(subject.authenticated?).to be_falsey
         end
       end
 
@@ -64,7 +64,7 @@ module Sessions
         let(:subject) { described_class.call(locked_user, user_params) }
 
         it 'return false' do
-          expect(subject.authorized?).to be_falsey
+          expect(subject.authenticated?).to be_falsey
         end
       end
     end
