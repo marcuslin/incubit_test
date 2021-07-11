@@ -9,9 +9,9 @@ module Sessions
     end
 
     def call
-      increase_counts
+      increase_failed_login_counts
 
-      perform_lock if reach_max_failed_attempt?
+      perform_acocunt_lock if reach_max_failed_login_attempt?
 
       user.save
     end
@@ -20,15 +20,15 @@ module Sessions
 
     attr_accessor :user
 
-    def perform_lock
+    def perform_acocunt_lock
       user.locked = true
     end
 
-    def increase_counts
+    def increase_failed_login_counts
       user.failed_login_count += 1
     end
 
-    def reach_max_failed_attempt?
+    def reach_max_failed_login_attempt?
       user.failed_login_count >= ENV['MAX_FAILED_LOGIN_ATTEMPT'].to_i
     end
   end
