@@ -82,6 +82,13 @@ RSpec.describe PasswordsController, type: :request do
           expect(flash[:notice]).to be_present
           expect(flash[:notice]).to eq('Password changed')
         end
+
+        it "will update users' password" do
+          subject
+
+          expect{ subject; unexpired_token_user.reload }.to change {
+            unexpired_token_user.authenticate(valid_password) }.from(false).to(unexpired_token_user)
+        end
       end
 
       context 'with invalid password' do
@@ -109,6 +116,13 @@ RSpec.describe PasswordsController, type: :request do
           expect(flash[:error]).to be_present
           expect(flash[:error]).to eq(["Password is too short (minimum is 8 characters)"])
         end
+
+        it "will not update users' password" do
+          subject
+
+          expect{ subject; unexpired_token_user.reload }.to_not change {
+            unexpired_token_user.authenticate(valid_password) }
+        end
       end
 
       context 'with unmatched password confimation' do
@@ -135,6 +149,13 @@ RSpec.describe PasswordsController, type: :request do
 
           expect(flash[:error]).to be_present
           expect(flash[:error]).to eq(["Password confirmation doesn't match Password"])
+        end
+
+        it "will not update users' password" do
+          subject
+
+          expect{ subject; unexpired_token_user.reload }.to_not change {
+            unexpired_token_user.authenticate(valid_password) }
         end
       end
     end
@@ -165,6 +186,13 @@ RSpec.describe PasswordsController, type: :request do
           expect(flash[:error]).to be_present
           expect(flash[:error]).to eq(['Reset link has already expired'])
         end
+
+        it "will not update users' password" do
+          subject
+
+          expect{ subject; expired_token_user.reload }.to_not change {
+            expired_token_user.authenticate(valid_password) }
+        end
       end
 
       context 'with invalid password' do
@@ -192,12 +220,19 @@ RSpec.describe PasswordsController, type: :request do
           expect(flash[:error]).to be_present
           expect(flash[:error]).to eq(['Password is too short (minimum is 8 characters)', 'Reset link has already expired'])
         end
+
+        it "will not update users' password" do
+          subject
+
+          expect{ subject; expired_token_user.reload }.to_not change {
+            expired_token_user.authenticate(valid_password) }
+        end
       end
 
       context 'with unmatched password confimation' do
         let(:user_with_unmatched_confirmation) { { user: FactoryBot.attributes_for(:user_with_unmatched_confirmation) } }
         let(:subject) do
-          put "/passwords/#{unexpired_token_user.reset_password_token}",
+          put "/passwords/#{expired_token_user.reset_password_token}",
             params: user_with_unmatched_confirmation
         end
 
@@ -217,7 +252,14 @@ RSpec.describe PasswordsController, type: :request do
           subject
 
           expect(flash[:error]).to be_present
-          expect(flash[:error]).to eq(["Password confirmation doesn't match Password"])
+          expect(flash[:error]).to eq(["Password confirmation doesn't match Password", "Reset link has already expired"])
+        end
+
+        it "will not update users' password" do
+          subject
+
+          expect{ subject; expired_token_user.reload }.to_not change {
+            expired_token_user.authenticate(valid_password) }
         end
       end
     end

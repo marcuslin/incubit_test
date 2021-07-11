@@ -85,7 +85,7 @@ RSpec.describe UsersController, type: :request do
       end
 
       context 'perform update on current user' do
-        context 'update user with correct information' do
+        context 'with correct information' do
           it 'response 302' do
             subject
 
@@ -104,6 +104,13 @@ RSpec.describe UsersController, type: :request do
             subject
 
             expect(user.reload.username).to eq username
+          end
+
+          it "will update users' password" do
+            subject
+
+            expect{ subject; user.reload }.to change { user.authenticate(valid_password) }.from(false).to(user)
+            expect(user.reload.authenticate(valid_password)).to eq user
           end
         end
 
@@ -135,6 +142,13 @@ RSpec.describe UsersController, type: :request do
             subject
 
             expect(user.reload.username).not_to eq username
+          end
+
+          it "will not update users' password" do
+            subject
+
+            expect{ subject; user.reload }.to_not change { user.authenticate(valid_password) }
+            expect(user.reload.authenticate(valid_password)).to be_falsey
           end
         end
 
@@ -207,6 +221,13 @@ RSpec.describe UsersController, type: :request do
 
             expect(user.reload.password).not_to eq incorrect_password
           end
+
+          it "will not update users' password" do
+            subject
+
+            expect{ subject; user.reload }.to_not change { user.authenticate(valid_password) }
+            expect(user.reload.authenticate(valid_password)).to be_falsey
+          end
         end
       end
 
@@ -239,6 +260,13 @@ RSpec.describe UsersController, type: :request do
 
           expect(other_user.reload.username).to eq other_user.username
           expect(other_user.reload.username).not_to eq username
+        end
+
+        it "will not update other users' password" do
+          subject
+
+          expect{ subject; other_user.reload }.to_not change { other_user.authenticate(valid_password) }
+          expect(other_user.reload.authenticate(valid_password)).to be_falsey
         end
       end
     end
